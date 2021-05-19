@@ -1,0 +1,111 @@
+---
+title: "Microaprendizajes de un Proyecto"
+author: "Sergio Garcia Mora | Club de R para RRHH"
+date: "22/05/2021"
+output:
+  html_document:
+    theme: spacelab
+    highlight: pygments
+    toc: yes
+    toc_float: yes
+    code_download: yes
+    code_fold: hide
+---
+
+# Introducción
+
+Esta presentación se centra en algunos *microaprendizajes* de un proyecto de análisis de resultados de una encuesta de diversidad e inclusión.
+
+Lo razón por la que lo llamo *"microaprendizajes"* es porque no tuve que aprender muchas cosas desde cero, pero si aprendí varios truquitos que me sirvieron mucho.
+
+Voy a usar una encuesta simulada para no violar la confidencialidad de los datos, pero va a ser algo análogo a lo que estuve usando en el proyecto.
+
+# Aprendizajes
+
+## El *chunk* de 'setup'
+
+El bloque de código de `setup` es muy útil para controlar cómo se van a comportar todos los bloques de código.
+
+Mi archivo original tiene +150 bloques de código, imaginen si modificara uno por uno las características de cada bloque.
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.retina = 3)
+```
+
+
+## Ordenar el código
+
+Tener un orden en el código es muy importante para poder ir y venir rápido y encontrar rápidamente las cosas, modificar algo, y demás.
+
+Dentro de los bloques de código también es importante poner títulos o marcadores que nos ayuden a encontrar rápido las cosas. El orden que definí fue:
+
+1. Librerías.
+2. Configuraciones generales
+3. Carga de datos
+4. Preprocesamiento y limpieza de datos
+
+```{r inicio}
+# Librerías -----
+library(tidyverse)
+library(gt)
+library(scales)
+library(extrafont)
+library(readxl)
+
+
+# Configuraciones generales ----------
+
+# Colores
+verde <- "#01B3B6"
+negro <- "#333132"
+gris <- "##AEB6BF"
+
+color3 <- c(verde, gris, negro)
+color2 <- c(verde, negro)
+
+# Opciones de visualización --------
+options(scipen = 999)   # Modifica la visualización de los ejes numérico a valores nominales
+
+loadfonts(quiet = TRUE) # Permite cargar en R otros tipos de fuentes.
+
+# Estilo limpio sin líneas de fondo
+estilo <- theme(panel.grid = element_blank(),
+                plot.background = element_rect(fill = "#FBFCFC"),
+                panel.background = element_blank(),
+                text = element_text(family = "Ubuntu Mono"))
+
+# Estilo limpio con líneas de referencia verticales en gris claro
+estilov <- theme(panel.grid = element_blank(),
+                 plot.background = element_rect(fill = "#FBFCFC"),
+                 panel.background = element_blank(),
+                 panel.grid.major.x = element_line(color = "#ecf0f1"),
+                 text = element_text(family = "Ubuntu Mono"))
+
+# Estilo limpio con líneas de referencia horizontales en gris claro
+estiloh <- theme(panel.grid = element_blank(),
+                 plot.background = element_rect(fill = "#FBFCFC"),
+                 panel.background = element_blank(),
+                 panel.grid.major.y = element_line(color = "#ecf0f1"),
+                 text = element_text(family = "Ubuntu Mono"))
+
+
+# Creo un objeto con un texto que se va a repetir mucho a lo largo del análisis
+fuente <- "Club de R para RRHH\nDatos Ficticios"
+
+# Creo objetos para formatear las etiquetas numéricas de los ejes x e y
+eje_x_n <- scale_x_continuous(labels = comma_format(big.mark = ".", decimal.mark = ","))
+
+eje_y_n <- scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ","))
+
+eje_x_per <- scale_x_continuous(labels = scales::percent_format(accuracy = 1))
+
+eje_y_per <- scale_y_continuous(labels = scales::percent_format(accuracy = 1))
+
+# Carga de Datos -----
+encuesta <- read_excel("data/encuesta.xlsx")
+
+```
+
+
+texto en gráficos
+
