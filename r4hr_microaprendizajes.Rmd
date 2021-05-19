@@ -20,6 +20,12 @@ Lo razón por la que lo llamo *"microaprendizajes"* es porque no tuve que aprend
 
 Voy a usar una encuesta simulada para no violar la confidencialidad de los datos, pero va a ser algo análogo a lo que estuve usando en el proyecto.
 
+### `r fontawesome::fa("github", fill = "steelblue")` [Repo](https://github.com/r4hr/r4hr_microaprendizajes)
+
+Este material se puede utilizar y compartir sin fines comerciales y citando la fuente.
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cc-by-nc_icon.svg/1200px-Cc-by-nc_icon.svg.png){width="150"}
+
 # Aprendizajes
 
 ## El *chunk* de 'setup'
@@ -32,17 +38,16 @@ Mi archivo original tiene +150 bloques de código, imaginen si modificara uno po
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.retina = 3)
 ```
 
-
 ## Ordenar el código
 
 Tener un orden en el código es muy importante para poder ir y venir rápido y encontrar rápidamente las cosas, modificar algo, y demás.
 
 Dentro de los bloques de código también es importante poner títulos o marcadores que nos ayuden a encontrar rápido las cosas. El orden que definí fue:
 
-1. Librerías.
-2. Configuraciones generales
-3. Carga de datos
-4. Preprocesamiento y limpieza de datos
+1.  Librerías.
+2.  Configuraciones generales
+3.  Carga de datos
+4.  Preprocesamiento y limpieza de datos
 
 ```{r inicio}
 # Librerías -----
@@ -93,19 +98,18 @@ estiloh <- theme(panel.grid = element_blank(),
 fuente <- "Club de R para RRHH\nDatos Ficticios"
 
 # Creo objetos para formatear las etiquetas numéricas de los ejes x e y
-eje_x_n <- scale_x_continuous(labels = comma_format(big.mark = ".", decimal.mark = ","))
-
-eje_y_n <- scale_y_continuous(labels = comma_format(big.mark = ".", decimal.mark = ","))
-
 eje_x_per <- scale_x_continuous(labels = scales::percent_format(accuracy = 1))
 
 eje_y_per <- scale_y_continuous(labels = scales::percent_format(accuracy = 1))
 
 # Carga de Datos -----
 encuesta <- read_excel("data/encuesta.xlsx")
+plantel  <- read_excel("data/plantel.xlsx")
 
 ```
 
+> Y comenten el código por amor a Jebús!
 
-texto en gráficos
+![](files/comenten.png){width="300"}
 
+texto en gráficos etiquetas largas nombres de los bloques
