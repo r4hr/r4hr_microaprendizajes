@@ -18,3 +18,7 @@ Nos vemos el sábado 🙌
 
 
 Sergio Garcia Mora
+
+Este material se puede utilizar y compartir sin fines comerciales y citando la fuente.
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cc-by-nc_icon.svg/1200px-Cc-by-nc_icon.svg.png){width="150"}
