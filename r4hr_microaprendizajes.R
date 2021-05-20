@@ -1,5 +1,3 @@
-
-## ----inicio----------------------------------------------------------------------------------
 # Librerías -----
 library(tidyverse)
 library(gt)
@@ -45,7 +43,7 @@ estiloh <- theme(panel.grid = element_blank(),
 
 
 # Creo un objeto con un texto que se va a repetir mucho a lo largo del análisis
-fuente <- "Club de R para RRHH\nDatos Ficticios"
+fuente <- "Fuente: Datos Ficticios\nClub de R para RRHH"
 
 # Creo objetos para formatear las etiquetas numéricas de los ejes x e y
 eje_x_per <- scale_x_continuous(labels = scales::percent_format(accuracy = 1))
@@ -103,13 +101,6 @@ ggplot(enc, aes(x = pais, fill = resultado)) +
        caption = fuente)
 
 
-## ----ejemplo1, eval=FALSE--------------------------------------------------------------------
-## {r ref.label="grafico1"}
-
-
-## ----ref.label="grafico1"--------------------------------------------------------------------
-
-
 
 ## ----etiq-largas-----------------------------------------------------------------------------
 enc %>% 
@@ -150,9 +141,6 @@ enc %>%
        caption = fuente)
 
 
-## ----ej2, eval=FALSE-------------------------------------------------------------------------
-## {r fig.height=8} # El tamaño es exagerado en este caso
-
 
 ## ----etiq-largas3, fig.height=8--------------------------------------------------------------
 ranking <- enc %>% 
@@ -177,7 +165,7 @@ ranking +
                                 accuracy = 1)), # Indica la cantidad de decimales
             size = 3,                           # Cambia el tamaño de la letra
             hjust = 1.2)                        # Mueve la etiqueta para la izquierda
-            face
+            
 
             
             

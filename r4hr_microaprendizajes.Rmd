@@ -49,6 +49,7 @@ Dentro de los bloques de código también es importante poner títulos o marcado
 2.  Configuraciones generales
 3.  Carga de datos
 4.  Preprocesamiento y limpieza de datos
+5.  Funciones
 
 ```{r inicio}
 # Librerías -----
@@ -180,15 +181,13 @@ Voilá!
 
 ```
 
-texto en gráficos etiquetas largas nombres de los bloques
-
 ## Etiquetas largas
 
 A veces necesitamos presentar en un gráfico o en una tabla la pregunta original de la encuesta. Por ejemplo, una de las "preguntas" de la encuesta dice:
 
-*`r enc[2,7]`*
+> *`r enc[2,7]`*
 
-Ahora veamos cómo se ven las preguntas si intentamos hacer un ranking.
+Ahora veamos cómo se ven las preguntas en un gráfico si intentamos hacer un ranking.
 
 ```{r etiq-largas}
 enc %>% 
@@ -410,4 +409,47 @@ Capaz encuentre lo que necesito en estos libros:
 
 Ya les contaré... stay tuned 📺
 
-Código inline pull percent
+## Código Inline
+
+Como sabemos, algo interesante de RMarkdown es la posibilidad de utilizar el código de los bloques dentro del texto.
+
+Así que creemos un pequeño objeto primero para almacenar los resultados positivos y negativos por género.
+
+```{r cod-inl}
+result_genero <- enc %>% 
+  cant_prop_gen()
+
+result_genero
+```
+
+Usando la llamada de datos de un dataframe con `nombre_df[fila,columna]` puedo usar los resultados almacenados para incluirlos dentro del texto por ejemplo para decir:
+
+*Los resultados positivos para las personas de género femenino es `r result_genero[1,4]`* .
+
+Lo ideal es poder ver ese resultado como un porcentaje, así que intuitivamente podemos usar la función `percent` para lograr eso...
+
+...y no va a funcionar. Obtenemos el siguiente mensaje de error:
+
+```{r eval=FALSE}
+# Intento de código inline
+`r percent(result_genero[1,4])`
+
+# Quitting from lines 425-441 (r4hr_microaprendizajes.Rmd) 
+# Error in is.finite(x) : default method not implemented for type 'list'
+```
+
+Para que la función `percent` funcione la tenemos que combinar con la función `pull` . Y ahora así sí funciona:
+
+*Los resultados positivos para las personas de género femenino es `r percent(pull(result_genero[1,4]))`* .
+
+## *Trust the Tidyverse*
+
+> *Lo barato sale caro*
+>
+> Dicho popular
+
+![](https://linternasybosques.files.wordpress.com/2018/10/meme-no-creas.png){width="300"}
+
+La encuesta que estábamos analizando era anónima, lo cual hacía imposible poder cruzar datos contra el listado de empleados.
+
+Pero, sí podíamos calcular los resultados según la composición del liderazgo. Para eso teníamos que calcular el porcentaje de líderes hombres y mujeres por sector.
