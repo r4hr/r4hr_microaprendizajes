@@ -18,3 +18,6 @@ Nos vemos el sábado 🙌
 
 
 Sergio Garcia Mora
+
+## Presentación
+En este link se puede ver la versión final del documento hecho en RMarkdown. [RPubs](https://rpubs.com/Data4HR/r4hr-microaprendizajes)
