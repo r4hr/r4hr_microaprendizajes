@@ -50,9 +50,14 @@ eje_x_per <- scale_x_continuous(labels = scales::percent_format(accuracy = 1))
 
 eje_y_per <- scale_y_continuous(labels = scales::percent_format(accuracy = 1))
 
+
+
 # Carga de Datos -----
 encuesta <- read_excel("data/encuesta.xlsx")
 plantel  <- read_excel("data/plantel.xlsx")
+
+
+
 
 # Preparación de datos -----------
 
@@ -205,28 +210,48 @@ enc %>%
   geom_col(position = "dodge")
 
 
-library(ggplot2)
-
-plots <- mtcars %>% 
-  split(.$cyl) %>% 
-  map(~ggplot(.x, aes(mpg, wt)) + geom_point())
-
-paths <- stringr::str_c(names(plots), ".png")
-
-pwalk(list(paths, plots), ggsave, path = "files/")
-
-mtcars %>% 
-  split(.$cyl)
 
 
-shalalala <- enc %>% 
+
+graficos <- enc %>% 
   group_by(sector, genero, resultado) %>% 
   summarise(cant = n()) %>% 
   mutate(prop = cant / sum(cant)) %>% 
   split(.$sector) %>% 
   map(~ggplot(.x, aes(y = sector, x = cant, fill = genero)) +
-        geom_col(position = "dodge"))
+        geom_col(position = "dodge") + estilov) 
 
-paths <- stringr::str_c(names(shalalala), ".png")
+paths <- stringr::str_c(names(graficos), ".png")
 
-pwalk(list(paths, shalalala), ggsave, path = "files/")
+pwalk(list(paths, graficos), ggsave, path = "files/")
+
+
+# Trust the Tidyverse ------
+
+# Cuento la cantidad de líderes por sector y géenero
+plantel <- plantel %>% 
+  rename(division = `Unidad de Negocio`, 
+         lider = Líder, 
+         sexo = Género, 
+         sector = Sector, 
+         pais = País) %>% 
+  filter(lider == "true") %>% 
+  group_by(pais, division, sector, lider, sexo) %>% 
+  tally() %>% 
+  ungroup()
+
+# Pivoteo el dataset a un dataset ancho
+plantel <- plantel %>% 
+  pivot_wider(.,
+              names_from = sexo,
+              values_from = n)
+
+# Reemplaza los NA con un 0
+plantel[is.na(plantel)] <- 0
+
+
+# Calculo porcentaje de líderes hombres
+plantel %>% 
+  mutate(prop_lider_hombre = if_else(Femenino == 0, 1, Masculino / (Masculino +Femenino))) %>% 
+  select(-lider)
+

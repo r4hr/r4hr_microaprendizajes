@@ -20,11 +20,13 @@ Lo razón por la que lo llamo *"microaprendizajes"* es porque no tuve que aprend
 
 Voy a usar una encuesta simulada para no violar la confidencialidad de los datos, pero va a ser algo análogo a lo que estuve usando en el proyecto.
 
+Para explotar al máximo esta sesión conviene saber un poco de hacer informes con RMarkdown. Si necesitás un tutorial sobre ese tema te comparto el [video que hicimos el año pasado](https://youtu.be/KT4UfTqAYoU).
+
 ### `r fontawesome::fa("github", fill = "steelblue")` [Repo](https://github.com/r4hr/r4hr_microaprendizajes)
 
 Este material se puede utilizar y compartir sin fines comerciales y citando la fuente.
 
-![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cc-by-nc_icon.svg/1200px-Cc-by-nc_icon.svg.png){width="150"}
+![Licencia](https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cc-by-nc_icon.svg/1200px-Cc-by-nc_icon.svg.png){width="150"}
 
 # Aprendizajes
 
@@ -146,6 +148,8 @@ enc <- enc %>%
 > Y comenten el código por amor a Jebús!
 
 ![](files/comenten.png){width="300"}
+
+
 
 ## Poner el nombre a los bloques de código
 
@@ -271,7 +275,7 @@ ranking +
                                 accuracy = 1)), # Indica la cantidad de decimales
             size = 3,                           # Cambia el tamaño de la letra
             hjust = 1.2,                        # Mueve la etiqueta para la izquierda
-            family = "Ubuntu Mono")
+            family = "Ubuntu Mono") 
 ```
 
 Miremos lo que pasa cuando queremos agregar más información al gráfico, por ejemplo, con los resultados por país.
@@ -360,7 +364,7 @@ enc %>%
 
 ## Funciones
 
-Esto es un *work-in-progress* y tengo que agradecer a [Mónica Alonso](https://twitter.com/MonicaLA2000) de RLaies Buenos Aires por la ayuda.
+Esto es un *work-in-progress* y tengo que agradecer a [Mónica Alonso](https://twitter.com/MonicaLA2000) de RLadies Buenos Aires por la ayuda.
 
 El problema es que me encontré muchas veces escribiendo esta secuencia de código muchas veces:
 
@@ -424,7 +428,7 @@ result_genero
 
 Usando la llamada de datos de un dataframe con `nombre_df[fila,columna]` puedo usar los resultados almacenados para incluirlos dentro del texto por ejemplo para decir:
 
-*Los resultados positivos para las personas de género femenino es `r result_genero[1,4]`* .
+*Los resultados positivos para las personas de género femenino es `r result_genero[1,4]`*.
 
 Lo ideal es poder ver ese resultado como un porcentaje, así que intuitivamente podemos usar la función `percent` para lograr eso...
 
@@ -453,3 +457,39 @@ Para que la función `percent` funcione la tenemos que combinar con la función 
 La encuesta que estábamos analizando era anónima, lo cual hacía imposible poder cruzar datos contra el listado de empleados.
 
 Pero, sí podíamos calcular los resultados según la composición del liderazgo. Para eso teníamos que calcular el porcentaje de líderes hombres y mujeres por sector.
+
+```{r trust1}
+
+# Cuento la cantidad de líderes por sector y géenero
+plantel <- plantel %>% 
+  rename(division = `Unidad de Negocio`, 
+         lider = Líder, 
+         sexo = Género, 
+         sector = Sector, 
+         pais = País) %>% 
+  filter(lider == "true") %>% 
+  group_by(pais, division, sector, lider, sexo) %>% 
+  tally() %>% 
+  ungroup()
+
+plantel
+
+```
+
+```{r trust2}
+# Pivoteo el dataset a un dataset ancho
+plantel <- plantel %>% 
+  pivot_wider(.,
+              names_from = sexo,
+              values_from = n)
+
+# Reemplaza los NA con un 0
+plantel[is.na(plantel)] <- 0
+
+
+# Calculo porcentaje de líderes hombres
+plantel %>% 
+  mutate(prop_lider_hombre = if_else(Femenino == 0, 1, Masculino / (Masculino +Femenino))) %>% 
+  select(-lider)
+
+```
