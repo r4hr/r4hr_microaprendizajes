@@ -21,3 +21,5 @@ Sergio Garcia Mora
 
 ## Presentación
 En este link se puede ver la versión final del documento hecho en RMarkdown. [RPubs](https://rpubs.com/Data4HR/r4hr-microaprendizajes)
+
+La grabación de esta sesión la podés ver en [Youtube](https://youtu.be/lntmPdo8nbk)

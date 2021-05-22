@@ -149,8 +149,6 @@ enc <- enc %>%
 
 ![](files/comenten.png){width="300"}
 
-
-
 ## Poner el nombre a los bloques de código
 
 Algo muy útil es ponerle nombre a los bloques de código. Por un lado porque es fácil para navegar entre bloques buscándolos en RStudio.
@@ -478,18 +476,31 @@ plantel
 
 ```{r trust2}
 # Pivoteo el dataset a un dataset ancho
-plantel <- plantel %>% 
+(plantel <- plantel %>% 
   pivot_wider(.,
               names_from = sexo,
-              values_from = n)
+              values_from = n))
 
+
+
+```
+
+```{r trust3}
 # Reemplaza los NA con un 0
 plantel[is.na(plantel)] <- 0
 
+plantel
 
+
+```
+
+Terminados esos pasos puedo calcular el porcentaje de líderes hombres por país, unidad de negocio y sector para incorporarlo en el análisis.
+
+```{r trust4}
 # Calculo porcentaje de líderes hombres
 plantel %>% 
-  mutate(prop_lider_hombre = if_else(Femenino == 0, 1, Masculino / (Masculino +Femenino))) %>% 
-  select(-lider)
-
+  mutate(prop_lider_hombre = if_else(Femenino == 0,         # Condición
+                                     1,                     # Valor si cumple condición
+                                     Masculino / (Masculino +Femenino))) %>% # Valor si no cumple
+  select(-lider)                                            # Elimina columna 'líder'
 ```
